@@ -11,6 +11,8 @@ isRunning = True
 PADDLE_WIDTH = 20
 PADDLE_HEIGHT = 100
 
+BALL_RADIUS = 10
+
 # keep track of some keys
 p1UpPressed = False
 p1DownPressed = False
@@ -21,6 +23,12 @@ p2DownPressed = False
 p1Position = 250
 p2Position = 250
 
+ballPositionX = 250
+ballPositionY = 250
+
+ballVelocityX = 1
+ballVelocityY = 1
+
 # this is the game loop. since it continues while isRunning is true,
 # setting it to false in the game loop ends the game
 while isRunning:
@@ -29,7 +37,9 @@ while isRunning:
         if event.type == pygame.QUIT:
             isRunning = False
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w:
+            if event.key == pygame.K_ESCAPE:
+                isRunning = False
+            elif event.key == pygame.K_w:
                 p1UpPressed = True
             elif event.key == pygame.K_s:
                 p1DownPressed = True
@@ -57,6 +67,9 @@ while isRunning:
     if p2DownPressed:
         p2Position += 5
 
+    ballPositionX += ballVelocityX
+    ballPositionY += ballVelocityY
+
     # draw code
     # clear display
     display.fill((0, 0, 0))
@@ -64,8 +77,11 @@ while isRunning:
     # draw first player
     pygame.draw.rect(display, (255, 255, 255), (0, p1Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT))
 
-    #draw second player
+    # draw second player
     pygame.draw.rect(display, (255, 255, 255), (500 - PADDLE_WIDTH, p2Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT))
+
+    # draw ball
+    pygame.draw.circle(display, (255, 255, 255), (ballPositionX, ballPositionY), BALL_RADIUS)
 
     # print display to the screen
     pygame.display.flip()
