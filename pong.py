@@ -1,8 +1,11 @@
 import pygame
 
+WINDOW_WIDTH = 500
+WINDOW_HEIGHT = 500
+
 # initialize pygame stuff, and create a display to draw on and a clock to keep time
 pygame.init()
-display = pygame.display.set_mode([500, 500])
+display = pygame.display.set_mode([WINDOW_WIDTH, WINDOW_HEIGHT])
 clock = pygame.time.Clock()
 
 # this value will keep track of whether the game is running or not
@@ -20,14 +23,20 @@ p1DownPressed = False
 p2UpPressed = False
 p2DownPressed = False
 
-p1Position = 250
-p2Position = 250
+p1Position = WINDOW_HEIGHT / 2
+p2Position = WINDOW_HEIGHT / 2
 
-ballPositionX = 250
-ballPositionY = 250
+ballPositionX = WINDOW_WIDTH / 2
+ballPositionY = WINDOW_HEIGHT / 2 - 3 * WINDOW_WIDTH / 10
 
-ballVelocityX = 1
-ballVelocityY = 1
+ballVelocityX = 5
+ballVelocityY = 3
+
+def rectsCollide(rect1, rect2):
+    return  rect1[0] <= (rect2[0] + rect2[2]) and \
+            rect2[0] <= (rect1[0] + rect1[2]) and \
+            rect1[1] <= (rect2[1] + rect2[3]) and \
+            rect2[1] <= (rect1[1] + rect1[3])
 
 # this is the game loop. since it continues while isRunning is true,
 # setting it to false in the game loop ends the game
@@ -70,6 +79,15 @@ while isRunning:
     ballPositionX += ballVelocityX
     ballPositionY += ballVelocityY
 
+    if rectsCollide((0, p1Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT), (ballPositionX - BALL_RADIUS / 2, ballPositionY - BALL_RADIUS / 2, BALL_RADIUS, BALL_RADIUS)):
+        ballVelocityX = -ballVelocityX
+
+    if rectsCollide((WINDOW_WIDTH - PADDLE_WIDTH, p2Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT), (ballPositionX - BALL_RADIUS / 2, ballPositionY - BALL_RADIUS / 2, BALL_RADIUS, BALL_RADIUS)):
+        ballVelocityX = -ballVelocityX
+
+    if ballPositionY - BALL_RADIUS < 0 or ballPositionY + BALL_RADIUS > WINDOW_HEIGHT:
+        ballVelocityY = -ballVelocityY
+
     # draw code
     # clear display
     display.fill((0, 0, 0))
@@ -78,7 +96,7 @@ while isRunning:
     pygame.draw.rect(display, (255, 255, 255), (0, p1Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT))
 
     # draw second player
-    pygame.draw.rect(display, (255, 255, 255), (500 - PADDLE_WIDTH, p2Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT))
+    pygame.draw.rect(display, (255, 255, 255), (WINDOW_WIDTH - PADDLE_WIDTH, p2Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT))
 
     # draw ball
     pygame.draw.circle(display, (255, 255, 255), (ballPositionX, ballPositionY), BALL_RADIUS)
