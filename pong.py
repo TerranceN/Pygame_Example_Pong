@@ -67,7 +67,7 @@ while isRunning:
                 p2UpPressed = False
             elif event.key == pygame.K_DOWN:
                 p2DownPressed = False
-     
+
     # update code
     if p1UpPressed:
         p1Position -= 5
@@ -81,9 +81,23 @@ while isRunning:
     ballPositionX += ballVelocityX
     ballPositionY += ballVelocityY
 
-    p1Rect = (0, p1Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT)
-    p2Rect = (WINDOW_WIDTH - PADDLE_WIDTH, p2Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT)
-    ballRect = (ballPositionX - BALL_RADIUS / 2, ballPositionY - BALL_RADIUS / 2, BALL_RADIUS, BALL_RADIUS)
+    p1Rect = (
+        0,
+        p1Position - PADDLE_HEIGHT / 2,
+        PADDLE_WIDTH,
+        PADDLE_HEIGHT)
+
+    p2Rect = (
+        WINDOW_WIDTH - PADDLE_WIDTH,
+        p2Position - PADDLE_HEIGHT / 2,
+        PADDLE_WIDTH,
+        PADDLE_HEIGHT)
+
+    ballRect = (
+        ballPositionX - BALL_RADIUS / 2,
+        ballPositionY - BALL_RADIUS / 2,
+        BALL_RADIUS,
+        BALL_RADIUS)
 
     if rectsCollide(p1Rect, ballRect):
         ballPositionX = PADDLE_WIDTH + BALL_RADIUS / 2
@@ -101,10 +115,10 @@ while isRunning:
     display.fill((0, 0, 0))
 
     # draw first player
-    pygame.draw.rect(display, (255, 255, 255), (0, p1Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT))
+    pygame.draw.rect(display, (255, 255, 255), p1Rect)
 
     # draw second player
-    pygame.draw.rect(display, (255, 255, 255), (WINDOW_WIDTH - PADDLE_WIDTH, p2Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT))
+    pygame.draw.rect(display, (255, 255, 255), p2Rect)
 
     # draw ball
     pygame.draw.circle(display, (255, 255, 255), (ballPositionX, ballPositionY), BALL_RADIUS)
@@ -112,6 +126,7 @@ while isRunning:
     # print display to the screen
     pygame.display.flip()
 
-    # delay game so it runs at a specific framerate. If you didn't do this the game would run way too fast,
-    # and would run at a different speed depending on the speed of your computer.
+    # delay game so it runs at a specific framerate.
+    # If you didn't do this the game would run way too fast, and would run
+    #   at a different speed depending on the speed of your computer.
     clock.tick(60)
