@@ -79,10 +79,16 @@ while isRunning:
     ballPositionX += ballVelocityX
     ballPositionY += ballVelocityY
 
-    if rectsCollide((0, p1Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT), (ballPositionX - BALL_RADIUS / 2, ballPositionY - BALL_RADIUS / 2, BALL_RADIUS, BALL_RADIUS)):
+    p1Rect = (0, p1Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT)
+    p2Rect = (WINDOW_WIDTH - PADDLE_WIDTH, p2Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT)
+    ballRect = (ballPositionX - BALL_RADIUS / 2, ballPositionY - BALL_RADIUS / 2, BALL_RADIUS, BALL_RADIUS)
+
+    if rectsCollide(p1Rect, ballRect):
+        ballPositionX = PADDLE_WIDTH + BALL_RADIUS / 2
         ballVelocityX = -ballVelocityX
 
-    if rectsCollide((WINDOW_WIDTH - PADDLE_WIDTH, p2Position - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT), (ballPositionX - BALL_RADIUS / 2, ballPositionY - BALL_RADIUS / 2, BALL_RADIUS, BALL_RADIUS)):
+    if rectsCollide(p2Rect, ballRect):
+        ballPositionX = WINDOW_WIDTH - (PADDLE_WIDTH + BALL_RADIUS / 2)
         ballVelocityX = -ballVelocityX
 
     if ballPositionY - BALL_RADIUS < 0 or ballPositionY + BALL_RADIUS > WINDOW_HEIGHT:
