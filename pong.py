@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import pygame
 
 WINDOW_WIDTH = 500
